@@ -21,7 +21,7 @@ jobs:
         with:
           text: ${{ github.event.head_commit.message }}
           # Matches -r flag value, only M m and p characters
-          regex: '(?<=(-r))[ |:|\\\"]*(?P<value>[M|m|p]*)(?=[ |\\\"]|$)'
+          regex: '(?<=(-r))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
           flag: gm
           # retreive flag value with ${{ steps.regex-match.outputs.group1 }}
 
