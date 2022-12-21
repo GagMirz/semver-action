@@ -52,15 +52,13 @@ jobs:
           echo "LEVEL="${level}"" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-bump-semver@v1
-        if: |
-          [env.OPTION != '']
+        if: ${{ env.OPTION != '' }}
         id: bump-semver-patch
         with:
           current_version: ${{ env.LAST_TAG }}
           level: ${{ env.LEVEL }}
       - name: 'Add last tag to env'
-        if: |
-          [env.OPTION != '']
+        if: ${{ env.OPTION != '' }}
         run: |
           echo "LAST_TAG=${{ steps.bump-semver-patch.outputs.new_version }}" >> $GITHUB_ENV
 
