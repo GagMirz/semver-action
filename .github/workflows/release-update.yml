@@ -10,11 +10,7 @@ on:
         type: string
         default:  |
           zip -r asf.zip entrypoint.sh
-      asset_files:
-        required: true
-        type: string
-        default: |
-          ./asf.zip
+          echo "FILES=`pwd`/asf.zip" >> $GITHUB_ENV
 
 jobs:
   update_release:
@@ -87,4 +83,4 @@ jobs:
             Some cool changes that I'm not going to describe
           gzip: false
           files: >
-            ${{ github.event.inputs.asset_files }}
+            ${{ env.FILES }}
