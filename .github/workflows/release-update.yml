@@ -71,6 +71,7 @@ jobs:
 
       - name: "Create assets"
         run: |
+          echo ${{ inputs.asset_creating_script }}
           eval ${{ inputs.asset_creating_script }}
           echo `ls`
           echo `pwd`
