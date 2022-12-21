@@ -43,7 +43,7 @@ jobs:
                 && contains(steps.regex-match.outputs.match, 'p') }}
         id: bump-semver-patch
         with:
-          current_version: ${{ env.LAST_TAG }}
+          current_version: ${{ LAST_TAG }}
           level: patch
       - name: 'Add last tag to env'
         if: ${{ steps.regex-match.outputs.match != '' }}
@@ -55,7 +55,7 @@ jobs:
                 && contains(steps.regex-match.outputs.match, 'm') }}
         id: bump-semver-minor
         with:
-          current_version: ${{ env.LAST_TAG }}
+          current_version: ${{ LAST_TAG }}
           level: minor
       - name: 'Add last tag to env'
         if: ${{ steps.regex-match.outputs.match != '' }}
@@ -67,7 +67,7 @@ jobs:
                 && contains(steps.regex-match.outputs.match, 'M') }}
         id: bump-semver-major
         with:
-          current_version: ${{ env.LAST_TAG }}
+          current_version: ${{ LAST_TAG }}
           level: minor
       - name: 'Add last tag to env'
         if: ${{ steps.regex-match.outputs.match != '' }}
