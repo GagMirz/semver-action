@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: "Create environemnt variable"
         run: |
-          echo "Repository data ${{ env.GITHUB_REPOSITORY }}"
+          echo "Repository data ${{ GITHUB_REPOSITORY }}"
 
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
