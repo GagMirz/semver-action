@@ -19,7 +19,7 @@ jobs:
 
       - name: 'Add last tag to env'
         run: |
-          last_commit_message=$(git log --format=oneline -n 1 "${1}")
+          last_commit_message=$(git log -1 --pretty=format:"%s")
           echo "LAST_COMMIT_MESSAGE="${last_commit_message}"" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-regex-match@v2
