@@ -46,6 +46,7 @@ jobs:
           current_version: ${{ env.LAST_TAG }}
           level: patch
       - name: 'Add last tag to env'
+        if: ${{ steps.regex-match.outputs.match != '' }}
         run: |
           echo "LAST_TAG=${{ steps.bump-semver-major.outputs.new_version }}" >> $GITHUB_ENV
 
@@ -57,6 +58,7 @@ jobs:
           current_version: ${{ env.LAST_TAG }}
           level: minor
       - name: 'Add last tag to env'
+        if: ${{ steps.regex-match.outputs.match != '' }}
         run: |
           echo "LAST_TAG=${{ steps.bump-semver-major.outputs.new_version }}" >> $GITHUB_ENV
 
@@ -68,11 +70,11 @@ jobs:
           current_version: ${{ env.LAST_TAG }}
           level: minor
       - name: 'Add last tag to env'
+        if: ${{ steps.regex-match.outputs.match != '' }}
         run: |
           echo "LAST_TAG=${{ steps.bump-semver-major.outputs.new_version }}" >> $GITHUB_ENV
 
       - name: "Create environemnt variable"
-        if: ${{ steps.regex-match.outputs.match != '' }}
         run: |
           echo "commit match ${{ steps.regex-match.outputs.match }}"
           echo "release tag ${LAST_TAG}"
