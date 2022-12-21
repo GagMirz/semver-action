@@ -20,10 +20,10 @@ jobs:
           echo "VARIABLE=\"VALUE\"" >> $GITHUB_ENV
 
       - name: "Create environemnt variable"
-        env:
-          NEW_VARIABLE: ${{$VARIABLE}}
+        # env:
+        #   NEW_VARIABLE: ${{$VARIABLE}}
         run: |
-          echo "old variable value=${VARIABLE} and new value=${NEW_VARIABLE}"
+          echo "old variable value=${VARIABLE} and new value=${{ env.VARIABLE }}"
       # - uses: actions-ecosystem/action-regex-match@v2
       #   id: regex-match
       #   with:
