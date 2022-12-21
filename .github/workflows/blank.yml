@@ -1,36 +1,98 @@
-# This is a basic workflow to help you get started with Actions
+name: Update release with new tag and 
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branch
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      asset_creating_script:
+          required: true
+          type: string
+      asset_files:
+          required: true
+          type: string
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  update_release:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: 'Create environemnt variable'
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          echo "VARIABLE=\"VALUE\"" >> $GITHUB_ENV
+
+      - name: 'Create environemnt variable'
+        env: 
+          NEW_VARIABLE: $VARIABLE
+        run: |
+          echo "old variable value=${VARIABLE} and new value=${NEW_VARIABLE}"
+      # - uses: actions-ecosystem/action-regex-match@v2
+      #   id: regex-match
+      #   with:
+      #     text: ${{ github.event.head_commit.message }}
+      #     # Matches -r flag value, only M m and p characters
+      #     regex: '(?<=(-r))[ |:|\\\"]*(?P<value>[M|m|p]*)(?=[ |\\\"]|$)'
+      #     flag: gm
+      #     # retreive flag value with ${{ steps.regex-match.outputs.group1 }}
+
+      # - name: 'Get Previous tag'
+      #   id: previous_tag
+      #   uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      #   with:
+      #     fallback: 1.0.0
+      # - name: 'Add last tag to env'
+      #   env:
+      #     TAG:  ${{ steps.previous_tag.outputs.tag }}
+      #   run: |
+      #     echo "LAST_TAG=\"${TAG}\"" >> $GITHUB_ENV
+
+      # - uses: actions-ecosystem/action-bump-semver@v1
+      #   if: ${{ contains(steps.regex-match.outputs.group1, 'p') }}
+      #   id: bump-semver-patch
+      #   with:
+      #     current_version: ${{ steps.get-latest-tag.outputs.tag }}
+      #     level: patch
+      # - name: 'Add last tag to env'
+      #   env:
+      #     TAG:  ${{ steps.bump-semver-patch.outputs.new_version }}
+      #   run: |
+      #     echo "LAST_TAG=\"${TAG}\"" >> $GITHUB_ENV
+
+      # - uses: actions-ecosystem/action-bump-semver@v1
+      #   if: ${{ contains(steps.regex-match.outputs.group1, 'm') }}
+      #   id: bump-semver-minor
+      #   with:
+      #     current_version: ${{ steps.get-latest-tag.outputs.tag }}
+      #     level: minor
+      # - name: 'Add last tag to env'
+      #   env:
+      #     TAG:  ${{ steps.bump-semver-minor.outputs.new_version }}
+      #   run: |
+      #     echo "LAST_TAG=\"${TAG}\"" >> $GITHUB_ENV
+
+      # - uses: actions-ecosystem/action-bump-semver@v1
+      #   if: ${{ contains(steps.regex-match.outputs.group1, 'M') }}
+      #   id: bump-semver-major
+      #   with:
+      #     current_version: ${{ steps.get-latest-tag.outputs.tag }}
+      #     level: minor
+      # - name: 'Add last tag to env'
+      #   env:
+      #     TAG:  ${{ steps.bump-semver-major.outputs.new_version }}
+      #   run: |
+      #     echo "LAST_TAG=\"${TAG}\"" >> $GITHUB_ENV
+
+      # - uses: meeDamian/github-release@2.0
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     tag: ${{ env.MY_CUSTOM_TAG }}
+      #     name: My Creative Name
+      #     body: >
+      #       This release actually changes the fabric of the reality, so be careful 
+      #       while applying, as error in database migration, can irrecoverably wipe 
+      #       some laws of physics.  
+      #     gzip: folders
+      #     files: >
+      #       Dockerfile
+      #       action.yml
+      #     .github/
+      #       license:LICENSE
+      #       work-flows:.github/
