@@ -75,6 +75,8 @@ jobs:
       - name: "Create assets"
         run: |
           eval ${{ github.event.inputs.asset_creating_script }}
+          echo ls 
+          echo pwd
 
       - uses: meeDamian/github-release@2.0
         with:
