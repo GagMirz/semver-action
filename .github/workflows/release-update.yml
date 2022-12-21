@@ -10,6 +10,7 @@ on:
         type: string
         default:  |
           zip -r asf.zip entrypoint.sh
+          
           echo "FILES=`pwd`/asf.zip" >> $GITHUB_ENV
 
 jobs:
