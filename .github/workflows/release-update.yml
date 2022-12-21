@@ -71,8 +71,11 @@ jobs:
 
       - name: "Create assets"
         run: |
-          echo ${{ github.event.inputs.asset_creating_script }}
-          eval ${{ github.event.inputs.asset_creating_script }}
+          asdf="zip -r asf.zip entrypoint.sh \n
+          echo "FILES=`pwd`/asf.zip" >> $GITHUB_ENV"
+          
+          eval "${asdf}"
+          # eval ${{ github.event.inputs.asset_creating_script }} # Use when triggering from other repo wiht workflow_call
           echo `ls`
           echo `pwd`
 
