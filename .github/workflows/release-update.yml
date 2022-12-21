@@ -41,40 +41,28 @@ jobs:
         run: |
           echo "LAST_TAG=${{ steps.get-latest-tag.outputs.tag }}" >> $GITHUB_ENV
 
+      - name: 'Get level from option'
+        if: ${{ env.OPTION != '' }}
+        run: |
+          case $OPTION in
+            M) level="major";;
+            m) level="minor";;
+            p) level="pathc";;
+          esac
+          echo "LEVEL="${level}"" >> $GITHUB_ENV
+
       - uses: actions-ecosystem/action-bump-semver@v1
         if: |
-          [env.OPTION != ''] && [ -z "${OPTION##*p*}" ]
+          [env.OPTION != '']
         id: bump-semver-patch
         with:
           current_version: ${{ env.LAST_TAG }}
-          level: patch
+          level: ${{ env.LEVEL }}
       - name: 'Add last tag to env'
         if: |
-          [env.OPTION != ''] && [ -z "${OPTION##*p*}" ]
+          [env.OPTION != '']
         run: |
           echo "LAST_TAG=${{ steps.bump-semver-patch.outputs.new_version }}" >> $GITHUB_ENV
-
-      - uses: actions-ecosystem/action-bump-semver@v1
-        if: env.OPTION != '' && [ -z "${OPTION##*m*}" ]
-        id: bump-semver-minor
-        with:
-          current_version: ${{ env.LAST_TAG }}
-          level: minor
-      - name: 'Add last tag to env'
-        if: env.OPTION != '' && [ -z "${OPTION##*m*}" ]
-        run: |
-          echo "LAST_TAG=${{ steps.bump-semver-minor.outputs.new_version }}" >> $GITHUB_ENV
-
-      - uses: actions-ecosystem/action-bump-semver@v1
-        if: env.OPTION != '' && [ -z "${OPTION##*M*}" ]
-        id: bump-semver-major
-        with:
-          current_version: ${{ env.LAST_TAG }}
-          level: major
-      - name: 'Add last tag to env'
-        if: env.OPTION != '' && [ -z "${OPTION##*M*}" ]
-        run: |
-          echo "LAST_TAG=${{ steps.bump-semver-major.outputs.new_version }}" >> $GITHUB_ENV
 
       - name: "Create environemnt variable"
         run: |
