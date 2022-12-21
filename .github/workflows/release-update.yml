@@ -16,11 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
+      - name: 'Add last tag to env'
+        run: |
+          last_commit_message=$(git log --format=oneline -n 1 "${1}")
+          echo "LAST_COMMIT_MESSAGE="${last_commit_message}"" >> $GITHUB_ENV
+
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
-          text: ${{ github.event.head_commit.message }}
+          text: ${{ env.LAST_COMMIT_MESSAGE }}
           # Matches -r flag value, only M m and p characters
           regex: '(?<=(-r))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
           flag: gm
@@ -41,12 +46,11 @@ jobs:
 
       - name: "Create environemnt variable"
         run: |
-          echo "commit message ${{ github.event.head_commit.message }}"
+          echo "commit message ${{ env.LAST_COMMIT_MESSAGE }}"
           echo "commit match ${{ steps.regex-match.outputs.match }}"
           echo "commit group ${{ steps.regex-match.outputs.group1 }}"
           echo "option ${{ steps.regex-match.outputs.group1 }}"
           echo "release tag ${LAST_TAG}"
-          echo "esim"
 
       # - uses: actions-ecosystem/action-bump-semver@v1
       #   if: ${{ contains(steps.regex-match.outputs.group1, 'p') }}
