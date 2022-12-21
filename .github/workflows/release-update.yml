@@ -31,15 +31,15 @@ jobs:
           # retreive flag value with ${{ steps.regex-match.outputs.group1 }}
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
-        if: -z ${{ steps.regex-match.outputs.match != '' }}
+        if: ${{ steps.regex-match.outputs.match != '' }}
         id: get-latest-tag
       - name: 'Add last tag to env'
-        if: -z ${{ steps.regex-match.outputs.match != '' }}
+        if: ${{ steps.regex-match.outputs.match != '' }}
         run: |
           echo "LAST_TAG=${{ steps.get-latest-tag.outputs.tag }}" >> $GITHUB_ENV
 
       - name: "Create environemnt variable"
-        if: -z ${{ steps.regex-match.outputs.match != '' }}
+        if: ${{ steps.regex-match.outputs.match != '' }}
         run: |
           echo "commit match ${{ steps.regex-match.outputs.match }}"
           echo "release tag ${LAST_TAG}"
