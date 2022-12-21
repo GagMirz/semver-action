@@ -34,7 +34,7 @@ jobs:
         if: |
           [ -z ${{ steps.regex-match.outputs.match }} ]
         run: |
-          exit 0
+          cancel
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
