@@ -21,6 +21,9 @@ jobs:
         run: |
           last_commit_message=$(git log -1 --pretty=format:"%s")
           echo "LAST_COMMIT_MESSAGE="${last_commit_message}"" >> $GITHUB_ENV
+      - name: 'test 1'
+        run: |
+          cat $GITHUB_ENV
 
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
@@ -39,6 +42,9 @@ jobs:
           echo ${{ steps.get-latest-tag.outputs.tag }}
           echo "LAST_TAG=${{ steps.get-latest-tag.outputs.tag }}" 
           echo "LAST_TAG=${{ steps.get-latest-tag.outputs.tag }}" >> $GITHUB_ENV
+          cat $GITHUB_ENV
+      - name: 'test 2'
+        run: |
           cat $GITHUB_ENV
 
       - uses: actions-ecosystem/action-bump-semver@v1
