@@ -36,6 +36,7 @@ jobs:
       - name: 'Add last tag to env'
         if: ${{ steps.regex-match.outputs.match != '' }}
         run: |
+          echo ${{ steps.get-latest-tag.outputs.tag }}
           echo "LAST_TAG=${{ steps.get-latest-tag.outputs.tag }}" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-bump-semver@v1
@@ -43,7 +44,7 @@ jobs:
                 && contains(steps.regex-match.outputs.match, 'p') }}
         id: bump-semver-patch
         with:
-          current_version: ${{ LAST_TAG }}
+          current_version: ${{ env.LAST_TAG }}
           level: patch
       - name: 'Add last tag to env'
         if: ${{ steps.regex-match.outputs.match != '' }}
@@ -55,7 +56,7 @@ jobs:
                 && contains(steps.regex-match.outputs.match, 'm') }}
         id: bump-semver-minor
         with:
-          current_version: ${{ LAST_TAG }}
+          current_version: ${{ env.LAST_TAG }}
           level: minor
       - name: 'Add last tag to env'
         if: ${{ steps.regex-match.outputs.match != '' }}
@@ -67,7 +68,7 @@ jobs:
                 && contains(steps.regex-match.outputs.match, 'M') }}
         id: bump-semver-major
         with:
-          current_version: ${{ LAST_TAG }}
+          current_version: ${{ env.LAST_TAG }}
           level: minor
       - name: 'Add last tag to env'
         if: ${{ steps.regex-match.outputs.match != '' }}
