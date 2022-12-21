@@ -27,7 +27,7 @@ jobs:
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
-        if: ${{ steps.release-label.outputs.level != null }}
+        # if: ${{ steps.release-label.outputs.level != null }}
 
       # - name: 'Get Previous tag'
       #   id: previous_tag
