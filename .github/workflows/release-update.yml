@@ -28,14 +28,18 @@ jobs:
           flag: gm
           # retreive flag value with ${{ steps.regex-match.outputs.group1 }}
 
-      - name: 'Get Previous tag'
-        id: previous_tag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        with:
-          fallback: 1.0.0
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
+        if: ${{ steps.release-label.outputs.level != null }}
+
+      # - name: 'Get Previous tag'
+      #   id: previous_tag
+      #   uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      #   with:
+      #     fallback: 1.0.0
       - name: 'Add last tag to env'
         run: |
-          echo "LAST_TAG=\"${{ steps.previous_tag.outputs.tag }}\"" >> $GITHUB_ENV
+          echo "LAST_TAG=\"${{ steps.get-latest-tag.outputs.tag }}\"" >> $GITHUB_ENV
 
       - name: "Create environemnt variable"
         run: |
