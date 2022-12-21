@@ -1,0 +1,97 @@
+name: Update release with new tag and 
+
+on:
+  workflow_call:
+    inputs:
+      asset_creating_script:
+          required: true
+          type: string
+      asset_files:
+          required: true
+          type: string
+
+jobs:
+  update_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Create environemnt variable'
+        run: |
+          echo "VARIABLE=\"VALUE\"" >> $GITHUB_ENV
+
+      - name: 'Create environemnt variable'
+        env: 
+          NEW_VARIABLE: $VARIABLE
+        run: |
+          echo "old variable value=${VARIABLE} and new value=${NEW_VARIABLE}"
+      # - uses: actions-ecosystem/action-regex-match@v2
+      #   id: regex-match
+      #   with:
+      #     text: ${{ github.event.head_commit.message }}
+      #     # Matches -r flag value, only M m and p characters
+      #     regex: '(?<=(-r))[ |:|\\\"]*(?P<value>[M|m|p]*)(?=[ |\\\"]|$)'
+      #     flag: gm
+      #     # retreive flag value with ${{ steps.regex-match.outputs.group1 }}
+
+      # - name: 'Get Previous tag'
+      #   id: previous_tag
+      #   uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      #   with:
+      #     fallback: 1.0.0
+      # - name: 'Add last tag to env'
+      #   env:
+      #     TAG:  ${{ steps.previous_tag.outputs.tag }}
+      #   run: |
+      #     echo "LAST_TAG=\"${TAG}\"" >> $GITHUB_ENV
+
+      # - uses: actions-ecosystem/action-bump-semver@v1
+      #   if: ${{ contains(steps.regex-match.outputs.group1, 'p') }}
+      #   id: bump-semver-patch
+      #   with:
+      #     current_version: ${{ steps.get-latest-tag.outputs.tag }}
+      #     level: patch
+      # - name: 'Add last tag to env'
+      #   env:
+      #     TAG:  ${{ steps.bump-semver-patch.outputs.new_version }}
+      #   run: |
+      #     echo "LAST_TAG=\"${TAG}\"" >> $GITHUB_ENV
+
+      # - uses: actions-ecosystem/action-bump-semver@v1
+      #   if: ${{ contains(steps.regex-match.outputs.group1, 'm') }}
+      #   id: bump-semver-minor
+      #   with:
+      #     current_version: ${{ steps.get-latest-tag.outputs.tag }}
+      #     level: minor
+      # - name: 'Add last tag to env'
+      #   env:
+      #     TAG:  ${{ steps.bump-semver-minor.outputs.new_version }}
+      #   run: |
+      #     echo "LAST_TAG=\"${TAG}\"" >> $GITHUB_ENV
+
+      # - uses: actions-ecosystem/action-bump-semver@v1
+      #   if: ${{ contains(steps.regex-match.outputs.group1, 'M') }}
+      #   id: bump-semver-major
+      #   with:
+      #     current_version: ${{ steps.get-latest-tag.outputs.tag }}
+      #     level: minor
+      # - name: 'Add last tag to env'
+      #   env:
+      #     TAG:  ${{ steps.bump-semver-major.outputs.new_version }}
+      #   run: |
+      #     echo "LAST_TAG=\"${TAG}\"" >> $GITHUB_ENV
+
+      # - uses: meeDamian/github-release@2.0
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     tag: ${{ env.MY_CUSTOM_TAG }}
+      #     name: My Creative Name
+      #     body: >
+      #       This release actually changes the fabric of the reality, so be careful 
+      #       while applying, as error in database migration, can irrecoverably wipe 
+      #       some laws of physics.  
+      #     gzip: folders
+      #     files: >
+      #       Dockerfile
+      #       action.yml
+      #     .github/
+      #       license:LICENSE
+      #       work-flows:.github/
