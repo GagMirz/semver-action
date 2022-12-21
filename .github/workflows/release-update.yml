@@ -71,8 +71,8 @@ jobs:
 
       - name: "Create assets"
         run: |
-          echo ${{ inputs.asset_creating_script }}
-          eval ${{ inputs.asset_creating_script }}
+          echo ${{ github.event.inputs.asset_creating_script }}
+          eval ${{ github.event.inputs.asset_creating_script }}
           echo `ls`
           echo `pwd`
 
