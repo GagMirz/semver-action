@@ -8,9 +8,13 @@ on:
       asset_creating_script:
         required: true
         type: string
-    #   asset_files:
-    #     required: true
-    #     type: string
+        default:  |
+          zip -r asf.zip entrypoint.sh
+      asset_files:
+        required: true
+        type: string
+        default: |
+          ./asf.zip
 
 jobs:
   update_release:
@@ -40,7 +44,7 @@ jobs:
       - name: 'Add last tag to env'
         if: ${{ env.OPTION != '' }}
         run: |
-          echo "LAST_TAG=${{ steps.get-latest-tag.outputs.tag }}" >> $GITHUB_ENV
+          echo "NEW_TAG=${{ steps.get-latest-tag.outputs.tag }}" >> $GITHUB_ENV
 
       - name: 'Get level from option'
         if: ${{ env.OPTION != '' }}
@@ -48,7 +52,7 @@ jobs:
           case `echo $OPTION | xargs` in
             M) level="major";;
             m) level="minor";;
-            p) level="pathc";;
+            p) level="patch";;
           esac
           echo "LEVEL="${level}"" >> $GITHUB_ENV
 
@@ -56,31 +60,29 @@ jobs:
         if: ${{ env.OPTION != '' }}
         id: bump-semver-patch
         with:
-          current_version: ${{ env.LAST_TAG }}
+          current_version: ${{ env.NEW_TAG }}
           level: ${{ env.LEVEL }}
       - name: 'Add last tag to env'
         if: ${{ env.OPTION != '' }}
         run: |
-          echo "LAST_TAG=${{ steps.bump-semver-patch.outputs.new_version }}" >> $GITHUB_ENV
+          echo "NEW_TAG=${{ steps.bump-semver-patch.outputs.new_version }}" >> $GITHUB_ENV
 
       - name: "Create environemnt variable"
         run: |
           echo "commit match ${{ env.OPTION }}"
-          echo "release tag ${LAST_TAG}"
+          echo "release tag ${NEW_TAG}"
 
-      # - uses: meeDamian/github-release@2.0
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     tag: ${{ env.MY_CUSTOM_TAG }}
-      #     name: My Creative Name
-      #     body: >
-      #       This release actually changes the fabric of the reality, so be careful
-      #       while applying, as error in database migration, can irrecoverably wipe
-      #       some laws of physics.
-      #     gzip: folders
-      #     files: >
-      #       Dockerfile
-      #       action.yml
-      #     .github/
-      #       license:LICENSE
-      #       work-flows:.github/
+      - name: "Create assets"
+        run: |
+          eval ${{ github.event.inputs.asset_creating_script }}
+
+      - uses: meeDamian/github-release@2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.NEW_TAG }}
+          name: Some cool name
+          body: >
+            Some cool changes that I'm not going to describe
+          gzip: false
+          files: >
+            ${{ github.event.inputs.asset_files }}
