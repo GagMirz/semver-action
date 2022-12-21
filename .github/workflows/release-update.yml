@@ -31,7 +31,7 @@ jobs:
           # retreive flag value with ${{ steps.regex-match.outputs.group1 }}
       - name: 'Add last tag to env'
         run: |
-          echo "OPTION=${{ steps.regex-match.outputs.match }}" >> $GITHUB_ENV
+          echo "OPTION=${{ steps.regex-match.outputs.match }}#2" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
         if: ${{ env.OPTION != '' }}
