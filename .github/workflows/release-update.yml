@@ -41,8 +41,11 @@ jobs:
 
       - name: "Create environemnt variable"
         run: |
-          echo "commit message option ${{ steps.regex-match.outputs.group1 }} \n release tag ${LAST_TAG}"
-
+          echo "commit message ${{ github.event.head_commit.message }}"
+          echo "commit match ${{ steps.regex-match.outputs.match }}"
+          echo "commit group ${{ steps.regex-match.outputs.group1 }}"
+          echo "option ${{ steps.regex-match.outputs.group1 }}"
+          echo "release tag ${LAST_TAG}"
 
       # - uses: actions-ecosystem/action-bump-semver@v1
       #   if: ${{ contains(steps.regex-match.outputs.group1, 'p') }}
