@@ -21,9 +21,6 @@ jobs:
         run: |
           last_commit_message=$(git log -1 --pretty=format:"%s")
           echo "LAST_COMMIT_MESSAGE="${last_commit_message}"" >> $GITHUB_ENV
-      - name: 'test 1'
-        run: |
-          cat $GITHUB_ENV
 
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
@@ -32,63 +29,54 @@ jobs:
           # Matches -r flag value, only M m and p characters
           regex: '(?<=(-r))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
           # retreive flag value with ${{ steps.regex-match.outputs.group1 }}
+      - name: 'Add last tag to env'
+        run: |
+          echo "OPTION=${{ steps.regex-match.outputs.match }}" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
-        if: ${{ steps.regex-match.outputs.match != '' }}
+        if: ${{ env.OPTION != '' }}
         id: get-latest-tag
       - name: 'Add last tag to env'
-        if: ${{ steps.regex-match.outputs.match != '' }}
+        if: ${{ env.OPTION != '' }}
         run: |
-          echo ${{ steps.get-latest-tag.outputs.tag }}
-          echo "LAST_TAG=${{ steps.get-latest-tag.outputs.tag }}" 
           echo "LAST_TAG=${{ steps.get-latest-tag.outputs.tag }}" >> $GITHUB_ENV
-          cat $GITHUB_ENV
-      - name: 'test 2'
-        run: |
-          cat $GITHUB_ENV
 
       - uses: actions-ecosystem/action-bump-semver@v1
-        if: ${{ steps.regex-match.outputs.match != '' 
-                && contains(steps.regex-match.outputs.match, 'p') }}
+        if: env.OPTION != '' && [ -z "${OPTION##*p*}" ]
         id: bump-semver-patch
         with:
           current_version: ${{ env.LAST_TAG }}
           level: patch
       - name: 'Add last tag to env'
-        if: ${{ steps.regex-match.outputs.match != '' 
-                && contains(steps.regex-match.outputs.match, 'p') }}
+        if: env.OPTION != '' && [ -z "${OPTION##*p*}" ]
         run: |
           echo "LAST_TAG=${{ steps.bump-semver-patch.outputs.new_version }}" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-bump-semver@v1
-        if: ${{ steps.regex-match.outputs.match != '' 
-                && contains(steps.regex-match.outputs.match, 'm') }}
+        if: env.OPTION != '' && [ -z "${OPTION##*m*}" ]
         id: bump-semver-minor
         with:
           current_version: ${{ env.LAST_TAG }}
           level: minor
       - name: 'Add last tag to env'
-        if: ${{ steps.regex-match.outputs.match != '' 
-                && contains(steps.regex-match.outputs.match, 'm') }}
+        if: env.OPTION != '' && [ -z "${OPTION##*m*}" ]
         run: |
           echo "LAST_TAG=${{ steps.bump-semver-minor.outputs.new_version }}" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-bump-semver@v1
-        if: ${{ steps.regex-match.outputs.match != '' 
-                && contains(steps.regex-match.outputs.match, 'M') }}
+        if: env.OPTION != '' && [ -z "${OPTION##*M*}" ]
         id: bump-semver-major
         with:
           current_version: ${{ env.LAST_TAG }}
           level: major
       - name: 'Add last tag to env'
-        if: ${{ steps.regex-match.outputs.match != '' 
-                && contains(steps.regex-match.outputs.match, 'M') }}
+        if: env.OPTION != '' && [ -z "${OPTION##*M*}" ]
         run: |
           echo "LAST_TAG=${{ steps.bump-semver-major.outputs.new_version }}" >> $GITHUB_ENV
 
       - name: "Create environemnt variable"
         run: |
-          echo "commit match ${{ steps.regex-match.outputs.match }}"
+          echo "commit match ${{ env.OPTION }}"
           echo "release tag ${LAST_TAG}"
 
       # - uses: meeDamian/github-release@2.0
