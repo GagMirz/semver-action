@@ -40,7 +40,7 @@ jobs:
 
       - uses: actions-ecosystem/action-bump-semver@v1
         if: ${{ steps.regex-match.outputs.match != '' 
-                && contains(steps.regex-match.outputs.group1, 'p') }}
+                && contains(steps.regex-match.outputs.match, 'p') }}
         id: bump-semver-patch
         with:
           current_version: ${{ env.LAST_TAG }}
@@ -52,7 +52,7 @@ jobs:
 
       - uses: actions-ecosystem/action-bump-semver@v1
         if: ${{ steps.regex-match.outputs.match != '' 
-                && contains(steps.regex-match.outputs.group1, 'm') }}
+                && contains(steps.regex-match.outputs.match, 'm') }}
         id: bump-semver-minor
         with:
           current_version: ${{ env.LAST_TAG }}
@@ -64,7 +64,7 @@ jobs:
 
       - uses: actions-ecosystem/action-bump-semver@v1
         if: ${{ steps.regex-match.outputs.match != '' 
-                && contains(steps.regex-match.outputs.group1, 'M') }}
+                && contains(steps.regex-match.outputs.match, 'M') }}
         id: bump-semver-major
         with:
           current_version: ${{ env.LAST_TAG }}
