@@ -15,6 +15,9 @@ jobs:
   update_release:
     runs-on: ubuntu-latest
     steps:
+      - name: "Create environemnt variable"
+        run: |
+          echo "Repository data ${{GITHUB_REPOSITORY}}"
 
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
