@@ -15,34 +15,29 @@ jobs:
   update_release:
     runs-on: ubuntu-latest
     steps:
-      - name: "Create environemnt variable"
+
+      - uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match
+        with:
+          text: ${{ github.event.head_commit.message }}
+          # Matches -r flag value, only M m and p characters
+          regex: '(?<=(-r))[ |:|\\\"]*(?P<value>[M|m|p]*)(?=[ |\\\"]|$)'
+          flag: gm
+          # retreive flag value with ${{ steps.regex-match.outputs.group1 }}
+
+      - name: 'Get Previous tag'
+        id: previous_tag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0
+      - name: 'Add last tag to env'
         run: |
-          echo "VARIABLE=\"VALUE\"" >> $GITHUB_ENV
+          echo "LAST_TAG=\"${{ steps.previous_tag.outputs.tag }}\"" >> $GITHUB_ENV
 
       - name: "Create environemnt variable"
-        # env:
-        #   NEW_VARIABLE: ${{$VARIABLE}}
         run: |
-          echo "old variable value=${VARIABLE} and new value=${{ env.VARIABLE }}"
-      # - uses: actions-ecosystem/action-regex-match@v2
-      #   id: regex-match
-      #   with:
-      #     text: ${{ github.event.head_commit.message }}
-      #     # Matches -r flag value, only M m and p characters
-      #     regex: '(?<=(-r))[ |:|\\\"]*(?P<value>[M|m|p]*)(?=[ |\\\"]|$)'
-      #     flag: gm
-      #     # retreive flag value with ${{ steps.regex-match.outputs.group1 }}
+          echo "commit message option ${{ steps.regex-match.outputs.group1 }} \n release tag ${LAST_TAG}"
 
-      # - name: 'Get Previous tag'
-      #   id: previous_tag
-      #   uses: "WyriHaximus/github-action-get-previous-tag@v1"
-      #   with:
-      #     fallback: 1.0.0
-      # - name: 'Add last tag to env'
-      #   env:
-      #     TAG:  ${{ steps.previous_tag.outputs.tag }}
-      #   run: |
-      #     echo "LAST_TAG=\"${TAG}\"" >> $GITHUB_ENV
 
       # - uses: actions-ecosystem/action-bump-semver@v1
       #   if: ${{ contains(steps.regex-match.outputs.group1, 'p') }}
