@@ -46,6 +46,7 @@ jobs:
           echo "commit group ${{ steps.regex-match.outputs.group1 }}"
           echo "option ${{ steps.regex-match.outputs.group1 }}"
           echo "release tag ${LAST_TAG}"
+          echo "esim"
 
       # - uses: actions-ecosystem/action-bump-semver@v1
       #   if: ${{ contains(steps.regex-match.outputs.group1, 'p') }}
