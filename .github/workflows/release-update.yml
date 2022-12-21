@@ -1,6 +1,7 @@
 name: Update release with new tag and 
 
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       asset_creating_script:
