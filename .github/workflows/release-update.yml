@@ -2,11 +2,12 @@ name: Update release with new tag and
 
 on:
   workflow_dispatch:
+
   workflow_call:
-    # inputs:
-    #   asset_creating_script:
-    #     required: true
-    #     type: string
+    inputs:
+      asset_creating_script:
+        required: true
+        type: string
     #   asset_files:
     #     required: true
     #     type: string
