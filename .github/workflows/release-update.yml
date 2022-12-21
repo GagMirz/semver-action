@@ -1,27 +1,27 @@
-name: Update release with new tag and 
+name: Update release with new tag and
 
 on:
   workflow_dispatch:
   workflow_call:
     inputs:
       asset_creating_script:
-          required: true
-          type: string
+        required: true
+        type: string
       asset_files:
-          required: true
-          type: string
+        required: true
+        type: string
 
 jobs:
   update_release:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Create environemnt variable'
+      - name: "Create environemnt variable"
         run: |
           echo "VARIABLE=\"VALUE\"" >> $GITHUB_ENV
 
-      - name: 'Create environemnt variable'
-        env: 
-          NEW_VARIABLE: $VARIABLE
+      - name: "Create environemnt variable"
+        env:
+          NEW_VARIABLE: ${{$VARIABLE}}
         run: |
           echo "old variable value=${VARIABLE} and new value=${NEW_VARIABLE}"
       # - uses: actions-ecosystem/action-regex-match@v2
@@ -86,9 +86,9 @@ jobs:
       #     tag: ${{ env.MY_CUSTOM_TAG }}
       #     name: My Creative Name
       #     body: >
-      #       This release actually changes the fabric of the reality, so be careful 
-      #       while applying, as error in database migration, can irrecoverably wipe 
-      #       some laws of physics.  
+      #       This release actually changes the fabric of the reality, so be careful
+      #       while applying, as error in database migration, can irrecoverably wipe
+      #       some laws of physics.
       #     gzip: folders
       #     files: >
       #       Dockerfile
