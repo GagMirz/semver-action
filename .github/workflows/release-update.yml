@@ -81,6 +81,7 @@ jobs:
         if: ${{ env.CONTINUE == 'true' }}
         run: |
           eval ${{ inputs.asset_creating_script }}
+          sleep 5
           echo "$(ls)"
           echo "$(pwd)"
 
