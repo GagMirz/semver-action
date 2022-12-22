@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: 'Add last commit message to env'
+      - name: 'Get PR title and body'
         run: |
           continue=true
           pr_title="${{ github.event.pull_request.title }}"
@@ -28,21 +28,16 @@ jobs:
           echo "PR_BODY="${pr_body}"" >> $GITHUB_ENV
           echo "CONTINUE="${continue}"" >> $GITHUB_ENV
 
-      - name: 'Add last commit message to env'
-        if: ${{ env.CONTINUE == 'true' }}
-        run: |
-          last_commit_message="${PR_TITLE}"
-          echo "LAST_COMMIT_MESSAGE="${last_commit_message}"" >> $GITHUB_ENV
-
       - uses: actions-ecosystem/action-regex-match@v2
+        name: 'Retrieve -r flag value from title'
         id: regex-match
         if: ${{ env.CONTINUE == 'true' }}
         with:
-          text: ${{ env.LAST_COMMIT_MESSAGE }}
+          text: ${{ env.PR_TITLE }}
           # Matches -r flag value, only M m and p characters
           regex: '(?<=(-r))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
-          # retreive flag value with ${{ steps.regex-match.outputs.group1 }}
-      - name: 'Add last tag to env'
+
+      - name: 'Check SemVer update option, add to env'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
           option="${{ steps.regex-match.outputs.match }}"
@@ -50,12 +45,15 @@ jobs:
           echo "OPTION="${option}"" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
+        name: 'Get last SemVer tag'
         id: get-latest-tag
         if: ${{ env.CONTINUE == 'true' }}
       - name: 'Add last tag to env'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
-          echo "NEW_TAG=${{ steps.get-latest-tag.outputs.tag }}" >> $GITHUB_ENV
+          old_tag="${{ steps.get-latest-tag.outputs.tag }}"
+          [ -z old_tag ] && old_tag=v0.0.0
+          echo "OLD_TAG=old_tag" >> $GITHUB_ENV
 
       - name: 'Get level from option'
         if: ${{ env.CONTINUE == 'true' }}
@@ -68,29 +66,21 @@ jobs:
           echo "LEVEL="${level}"" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-bump-semver@v1
-        if: ${{ env.CONTINUE == 'true' }}
+        name: 'Update SemVer tag' 
         id: bump-semver-patch
+        if: ${{ env.CONTINUE == 'true' }}
         with:
-          current_version: ${{ env.NEW_TAG }}
+          current_version: ${{ env.OLD_TAG }}
           level: ${{ env.LEVEL }}
-      - name: 'Add last tag to env'
+      - name: 'Add new to tag to env'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
           echo "NEW_TAG=${{ steps.bump-semver-patch.outputs.new_version }}" >> $GITHUB_ENV
 
-      - name: "Create environemnt variable"
-        run: |
-          echo "commit match ${{ env.OPTION }}"
-          echo "release tag ${NEW_TAG}"
-
       - name: "Create assets"
         if: ${{ env.CONTINUE == 'true' }}
         run: |
-          # asdf="zip -r asf.zip entrypoint.sh
-          # echo "FILES=`pwd`/asf.zip" >> $GITHUB_ENV"
-          
-          # eval "${asdf}"
-          eval ${{ inputs.asset_creating_script }} # Use when triggering from other repo wiht workflow_call
+          eval ${{ inputs.asset_creating_script }}
 
       - uses: meeDamian/github-release@2.0
         if: ${{ env.CONTINUE == 'true' }}
