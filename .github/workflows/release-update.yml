@@ -53,7 +53,7 @@ jobs:
         run: |
           old_tag="${{ steps.get-latest-tag.outputs.tag }}"
           [ -z old_tag ] && old_tag=v0.0.0
-          echo "OLD_TAG=old_tag" >> $GITHUB_ENV
+          echo "OLD_TAG="${old_tag}"" >> $GITHUB_ENV
 
       - name: 'Get level from option'
         if: ${{ env.CONTINUE == 'true' }}
