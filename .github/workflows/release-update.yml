@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
 
   workflow_call:
-    inputs:
-      asset_creating_script:
-        required: true
-        type: string
-        default:  |
-          zip -r asf.zip entrypoint.sh
+    # inputs:
+    #   asset_creating_script:
+    #     required: true
+    #     type: string
+    #     default:  |
+    #       zip -r asf.zip entrypoint.sh
 
-          echo "FILES=`pwd`/asf.zip" >> $GITHUB_ENV
+    #       echo "FILES=`pwd`/asf.zip" >> $GITHUB_ENV
 
 jobs:
   update_release:
@@ -21,30 +21,47 @@ jobs:
 
       - name: 'Add last commit message to env'
         run: |
-          last_commit_message=$(git log -1 --pretty=format:"%s")
+          continue=true
+          pr_title="${{ github.event.pull_request.title }}"
+          [ -z "${pr_title}" ] && continue=false
+
+          pr_body="${{ github.event.pull_request.body }}"
+          [ -z "${pr_body}" ] && continue=false
+          
+          echo "PR_TITLE="${pr_title}"" >> $GITHUB_ENV
+          echo "PR_BODY="${pr_body}"" >> $GITHUB_ENV
+          echo "CONTINUE="${continue}"" >> $GITHUB_ENV
+
+      - name: 'Add last commit message to env'
+        if: ${{ env.CONTINUE == 'true' }}
+        run: |
+          # last_commit_message=$(git log -1 --pretty=format:"%s")
+          last_commit_message="${PR_TITLE}"
           echo "LAST_COMMIT_MESSAGE="${last_commit_message}"" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
+        if: ${{ env.CONTINUE == 'true' }}
         with:
           text: ${{ env.LAST_COMMIT_MESSAGE }}
           # Matches -r flag value, only M m and p characters
           regex: '(?<=(-r))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
           # retreive flag value with ${{ steps.regex-match.outputs.group1 }}
       - name: 'Add last tag to env'
+        if: ${{ env.CONTINUE == 'true' }}
         run: |
           echo "OPTION=${{ steps.regex-match.outputs.match }}" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
-        if: ${{ env.OPTION != '' }}
         id: get-latest-tag
+        if: ${{ env.CONTINUE == 'true' }}
       - name: 'Add last tag to env'
-        if: ${{ env.OPTION != '' }}
+        if: ${{ env.CONTINUE == 'true' }}
         run: |
           echo "NEW_TAG=${{ steps.get-latest-tag.outputs.tag }}" >> $GITHUB_ENV
 
       - name: 'Get level from option'
-        if: ${{ env.OPTION != '' }}
+        if: ${{ env.CONTINUE == 'true' }}
         run: |
           case `echo $OPTION | xargs` in
             M) level="major";;
@@ -54,13 +71,13 @@ jobs:
           echo "LEVEL="${level}"" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-bump-semver@v1
-        if: ${{ env.OPTION != '' }}
+        if: ${{ env.CONTINUE == 'true' }}
         id: bump-semver-patch
         with:
           current_version: ${{ env.NEW_TAG }}
           level: ${{ env.LEVEL }}
       - name: 'Add last tag to env'
-        if: ${{ env.OPTION != '' }}
+        if: ${{ env.CONTINUE == 'true' }}
         run: |
           echo "NEW_TAG=${{ steps.bump-semver-patch.outputs.new_version }}" >> $GITHUB_ENV
 
@@ -70,22 +87,21 @@ jobs:
           echo "release tag ${NEW_TAG}"
 
       - name: "Create assets"
+        if: ${{ env.CONTINUE == 'true' }}
         run: |
-          asdf="zip -r asf.zip entrypoint.sh \n
+          asdf="zip -r asf.zip entrypoint.sh
           echo "FILES=`pwd`/asf.zip" >> $GITHUB_ENV"
           
           eval "${asdf}"
           # eval ${{ github.event.inputs.asset_creating_script }} # Use when triggering from other repo wiht workflow_call
-          echo `ls`
-          echo `pwd`
 
       - uses: meeDamian/github-release@2.0
+        if: ${{ env.CONTINUE == 'true' }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ env.NEW_TAG }}
-          name: Some cool name
-          body: >
-            Some cool changes that I'm not going to describe
+          name: Release ${{env.NEW_TAG}}
+          body: ${{ env.PR_BODY }}
           gzip: false
           files: >
             ${{ env.FILES }}
