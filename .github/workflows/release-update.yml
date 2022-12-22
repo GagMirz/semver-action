@@ -89,7 +89,7 @@ jobs:
           # echo "FILES=`pwd`/asf.zip" >> $GITHUB_ENV"
           
           # eval "${asdf}"
-          eval ${{ github.event.inputs.asset_creating_script }} # Use when triggering from other repo wiht workflow_call
+          eval ${{ inputs.asset_creating_script }} # Use when triggering from other repo wiht workflow_call
 
       - uses: meeDamian/github-release@2.0
         if: ${{ env.CONTINUE == 'true' }}
