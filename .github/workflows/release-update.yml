@@ -22,6 +22,7 @@ jobs:
           [ -z "${pr_title}" ] && continue=false
 
           pr_body="${{ github.event.pull_request.body }}"
+          echo "CONTINUE="${continue}"" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-regex-match@v2
         name: 'Retrieve -r flag value from title'
