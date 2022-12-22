@@ -93,5 +93,4 @@ jobs:
           name: Release ${{env.NEW_TAG}}
           body: ${{ env.PR_BODY }}
           gzip: false
-          files: >
-            ${{ env.FILES }}
+          files: ${{ env.FILES }}
