@@ -81,6 +81,7 @@ jobs:
         if: ${{ env.CONTINUE == 'true' }}
         run: |
           eval ${{ inputs.asset_creating_script }}
+          echo "$(ls)"
 
       - uses: meeDamian/github-release@2.0
         if: ${{ env.CONTINUE == 'true' }}
