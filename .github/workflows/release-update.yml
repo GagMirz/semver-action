@@ -81,7 +81,6 @@ jobs:
         if: ${{ env.CONTINUE == 'true' }}
         run: |
           eval ${{ inputs.asset_creating_script }}
-          sleep 5
           echo "$(ls)"
           echo "$(pwd)"
 
@@ -93,6 +92,4 @@ jobs:
           name: Release ${{env.NEW_TAG}}
           body: ${{ env.PR_BODY }}
           gzip: folders
-          files: > # ${{ env.FILES }}
-            entry.zip
-            stuff.zip
+          files: ${{ env.FILES }}
