@@ -22,6 +22,9 @@ jobs:
           [ -z "${pr_title}" ] && continue=false
 
           pr_body="${{ github.event.pull_request.body }}"
+          
+          echo "PR_TITLE="${pr_title}"" >> $GITHUB_ENV
+          echo "PR_BODY="${pr_body}"" >> $GITHUB_ENV
           echo "CONTINUE="${continue}"" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-regex-match@v2
