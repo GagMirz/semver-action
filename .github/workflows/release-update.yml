@@ -92,5 +92,7 @@ jobs:
           tag: ${{ env.NEW_TAG }}
           name: Release ${{env.NEW_TAG}}
           body: ${{ env.PR_BODY }}
-          gzip: false
-          files: ${{ env.FILES }}
+          gzip: folders
+          files: > # ${{ env.FILES }}
+            /home/runner/work/tmp-action/tmp-action/entry.zip
+            /home/runner/work/tmp-action/tmp-action/stuff.zip
