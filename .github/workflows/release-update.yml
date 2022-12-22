@@ -31,7 +31,6 @@ jobs:
       - name: 'Add last commit message to env'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
-          # last_commit_message=$(git log -1 --pretty=format:"%s")
           last_commit_message="${PR_TITLE}"
           echo "LAST_COMMIT_MESSAGE="${last_commit_message}"" >> $GITHUB_ENV
 
@@ -46,7 +45,9 @@ jobs:
       - name: 'Add last tag to env'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
-          echo "OPTION=${{ steps.regex-match.outputs.match }}" >> $GITHUB_ENV
+          option="${{ steps.regex-match.outputs.match }}"
+          [ -z "${option}" ] && echo "CONTINUE="false"" >> $GITHUB_ENV
+          echo "OPTION="${option}"" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
