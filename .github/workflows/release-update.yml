@@ -4,14 +4,10 @@ on:
   workflow_dispatch:
 
   workflow_call:
-    # inputs:
-    #   asset_creating_script:
-    #     required: true
-    #     type: string
-    #     default:  |
-    #       zip -r asf.zip entrypoint.sh
-
-    #       echo "FILES=`pwd`/asf.zip" >> $GITHUB_ENV
+    inputs:
+      asset_creating_script:
+        required: true
+        type: string
 
 jobs:
   update_release:
@@ -89,11 +85,11 @@ jobs:
       - name: "Create assets"
         if: ${{ env.CONTINUE == 'true' }}
         run: |
-          asdf="zip -r asf.zip entrypoint.sh
-          echo "FILES=`pwd`/asf.zip" >> $GITHUB_ENV"
+          # asdf="zip -r asf.zip entrypoint.sh
+          # echo "FILES=`pwd`/asf.zip" >> $GITHUB_ENV"
           
-          eval "${asdf}"
-          # eval ${{ github.event.inputs.asset_creating_script }} # Use when triggering from other repo wiht workflow_call
+          # eval "${asdf}"
+          eval ${{ github.event.inputs.asset_creating_script }} # Use when triggering from other repo wiht workflow_call
 
       - uses: meeDamian/github-release@2.0
         if: ${{ env.CONTINUE == 'true' }}
