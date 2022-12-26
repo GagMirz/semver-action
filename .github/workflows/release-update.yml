@@ -100,10 +100,10 @@ jobs:
           files_to_update="${{ inputs.files_to_update }}" 
           files_to_rename="${{ inputs.files_to_rename }}" 
 
-          echo files_to_update # Debug
-          echo files_to_rename # Debug
+          echo $files_to_update # Debug
+          echo $files_to_rename # Debug
 
-          for file in $files_to_modify; do
+          for file in $files_to_update; do
             echo "Updating semver occurrences in $file"
             sed -i "" "s/${OLD_TAG_SED_DOT}/${NEW_TAG_SED_DOT}/" some.xml 
             sed -i "" "s/${OLD_TAG_SED_DASH}/${NEW_TAG_SED_DASH}/" some.xml 
