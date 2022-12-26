@@ -83,7 +83,7 @@ jobs:
           echo "NEW_TAG=${{ steps.bump-semver-patch.outputs.new_version }}" >> $GITHUB_ENV
 
       - name: 'Version variables'
-        if: ${{ env.CONTINUE == 'true' }} #other condition
+        if: ${{ env.CONTINUE == 'true' && inputs.files_to_rename != "" || inputs.files_to_rename != "" }} #other condition
         run: |
           echo "OLD_TAG_SED_DOT=${OLD_TAG//./\./}" >> $GITHUB_ENV
           echo "OLD_TAG_SED_DASH=${OLD_TAG//./\_/}" >> $GITHUB_ENV
@@ -106,6 +106,10 @@ jobs:
             mv $old_name $new_name
           done
 
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        if: ${{ inputs.files_to_rename != "" || inputs.files_to_rename != "" }}
+        with:
+          commit_message: Updated auto modify and renaming changes
 
       - name: 'Create assets'
         if: ${{ env.CONTINUE == 'true' }}
