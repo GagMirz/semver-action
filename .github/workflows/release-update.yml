@@ -20,6 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: 'master'
 
       - name: 'Get PR title and body'
         run: |
@@ -112,7 +114,7 @@ jobs:
             echo "Updating semver occurrences in $file"
             sed -i "s/${OLD_TAG_SED_DOT}/${NEW_TAG_SED_DOT}/g" $file
             sed -i "s/${OLD_TAG_SED_DASH}/${NEW_TAG_SED_DASH}/g" $file
-            cat $file
+            cat $file # Debug
           done
 
           # for old_name in $files_to_rename; do
