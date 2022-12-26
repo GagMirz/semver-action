@@ -85,6 +85,10 @@ jobs:
       - name: 'Version variables'
         if: ${{ env.CONTINUE == 'true' && inputs.files_to_rename || inputs.files_to_rename }}
         run: |
+          echo ${OLD_TAG//./\./}
+          echo ${OLD_TAG//./\_/}
+          echo ${NEW_TAG//./\./}
+          echo ${NEW_TAG//./\_/}
           echo "OLD_TAG_SED_DOT=${OLD_TAG//./\./}" >> $GITHUB_ENV
           echo "OLD_TAG_SED_DASH=${OLD_TAG//./\_/}" >> $GITHUB_ENV
           echo "NEW_TAG_SED_DOT=${NEW_TAG//./\./}" >> $GITHUB_ENV
