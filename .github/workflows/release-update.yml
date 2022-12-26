@@ -95,6 +95,11 @@ jobs:
           echo "NEW_TAG_SED_DOT=${NEW_TAG//./\./}" >> $GITHUB_ENV
           echo "NEW_TAG_SED_DASH=${NEW_TAG//./\_/}" >> $GITHUB_ENV
 
+          echo $OLD_TAG_SED_DOT # Debug
+          echo $OLD_TAG_SED_DASH # Debug
+          echo $NEW_TAG_SED_DOT # Debug
+          echo $NEW_TAG_SED_DASH # Debug
+
           echo "Variables set" # Debug
 
           files_to_update="${{ inputs.files_to_update }}" 
@@ -105,8 +110,8 @@ jobs:
 
           for file in $files_to_update; do
             echo "Updating semver occurrences in $file"
-            sed -i "" "s/${OLD_TAG_SED_DOT}/${NEW_TAG_SED_DOT}/" some.xml 
-            sed -i "" "s/${OLD_TAG_SED_DASH}/${NEW_TAG_SED_DASH}/" some.xml 
+            sed -i "" "s/${OLD_TAG_SED_DOT}/${NEW_TAG_SED_DOT}/" $file
+            sed -i "" "s/${OLD_TAG_SED_DASH}/${NEW_TAG_SED_DASH}/" $file
           done
 
           for old_name in $files_to_rename; do
