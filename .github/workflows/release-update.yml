@@ -90,10 +90,10 @@ jobs:
           echo ${NEW_TAG//./\./} # Debug
           echo ${NEW_TAG//./\_/} # Debug
 
-          echo "OLD_TAG_SED_DOT=${OLD_TAG//./\./}" >> $GITHUB_ENV
-          echo "OLD_TAG_SED_DASH=${OLD_TAG//./\_/}" >> $GITHUB_ENV
-          echo "NEW_TAG_SED_DOT=${NEW_TAG//./\./}" >> $GITHUB_ENV
-          echo "NEW_TAG_SED_DASH=${NEW_TAG//./\_/}" >> $GITHUB_ENV
+          OLD_TAG_SED_DOT="${OLD_TAG//./\./}"
+          OLD_TAG_SED_DASH="${OLD_TAG//./\_/}"
+          NEW_TAG_SED_DOT="${NEW_TAG//./\./}"
+          NEW_TAG_SED_DASH="${NEW_TAG//./\_/}"
 
           echo $OLD_TAG_SED_DOT # Debug
           echo $OLD_TAG_SED_DASH # Debug
