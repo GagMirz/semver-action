@@ -85,17 +85,23 @@ jobs:
       - name: 'Version variables'
         if: ${{ env.CONTINUE == 'true' && inputs.files_to_rename || inputs.files_to_rename }}
         run: |
-          echo ${OLD_TAG//./\./}
-          echo ${OLD_TAG//./\_/}
-          echo ${NEW_TAG//./\./}
-          echo ${NEW_TAG//./\_/}
+          echo ${OLD_TAG//./\./} # Debug
+          echo ${OLD_TAG//./\_/} # Debug
+          echo ${NEW_TAG//./\./} # Debug
+          echo ${NEW_TAG//./\_/} # Debug
+
           echo "OLD_TAG_SED_DOT=${OLD_TAG//./\./}" >> $GITHUB_ENV
           echo "OLD_TAG_SED_DASH=${OLD_TAG//./\_/}" >> $GITHUB_ENV
           echo "NEW_TAG_SED_DOT=${NEW_TAG//./\./}" >> $GITHUB_ENV
           echo "NEW_TAG_SED_DASH=${NEW_TAG//./\_/}" >> $GITHUB_ENV
 
+          echo "Variables set" # Debug
+
           files_to_update="${{ inputs.files_to_update }}" 
           files_to_rename="${{ inputs.files_to_rename }}" 
+
+          echo files_to_update # Debug
+          echo files_to_rename # Debug
 
           for file in $files_to_modify; do
             echo "Updating semver occurrences in $file"
