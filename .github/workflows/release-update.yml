@@ -88,14 +88,14 @@ jobs:
         if: ${{ env.CONTINUE == 'true' && inputs.files_to_rename || inputs.files_to_rename }}
         run: |
           echo ${OLD_TAG//./\\.} # Debug
-          echo ${OLD_TAG//./\\_} # Debug
+          echo ${OLD_TAG//./\\-} # Debug
           echo ${NEW_TAG//./\\.} # Debug
-          echo ${NEW_TAG//./\\_} # Debug
+          echo ${NEW_TAG//./\\-} # Debug
 
           OLD_TAG_SED_DOT="${OLD_TAG//./\\.}" 
-          OLD_TAG_SED_DASH="${OLD_TAG//./\\_}"
+          OLD_TAG_SED_DASH="${OLD_TAG//./\\-}"
           NEW_TAG_SED_DOT="${NEW_TAG//./\\.}"
-          NEW_TAG_SED_DASH="${NEW_TAG//./\\_}"
+          NEW_TAG_SED_DASH="${NEW_TAG//./\\-}"
 
           echo $OLD_TAG_SED_DOT # Debug
           echo $OLD_TAG_SED_DASH # Debug
