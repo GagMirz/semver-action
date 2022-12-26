@@ -117,6 +117,11 @@ jobs:
           for old_name in $files_to_rename; do
             echo "Updating semver occurrences in $file"
             new_name=$(sed "s/${OLD_TAG_SED_DASH}/${NEW_TAG_SED_DASH}/g" <<< $old_name)
+            echo $old_name # Debug
+            echo $new_name # Debug
+            echo $OLD_TAG_SED_DASH # Debug
+            echo $NEW_TAG_SED_DASH # Debug
+            echo $(sed "s/${OLD_TAG_SED_DASH}/${NEW_TAG_SED_DASH}/g" <<< $old_name) # Debug
 
             mv $old_name $new_name
           done
