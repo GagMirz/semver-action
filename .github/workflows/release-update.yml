@@ -126,10 +126,10 @@ jobs:
           #   mv $old_name $new_name
           # done
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        if: ${{ inputs.files_to_rename || inputs.files_to_rename }}
+      - name: Commit & Push changes
+        uses: actions-js/push@master
         with:
-          commit_message: Updated auto modify and renaming changes
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Create assets'
         if: ${{ env.CONTINUE == 'true' }}
