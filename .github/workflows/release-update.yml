@@ -14,9 +14,6 @@ on:
       files_to_rename:
         required: true
         type: string
-      final_branch:
-        type: string
-        default: main
 
 jobs:
   update_release:
@@ -24,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: 'master'
+          ref: ${{ github.event.repository.default_branch }}
 
       - name: 'Get PR title and body'
         run: |
@@ -137,7 +134,7 @@ jobs:
       - name: Commit & Push changes
         uses: actions-js/push@master
         with:
-          branch: ${{ inputs.final_branch }}
+          branch: ${{ github.event.repository.default_branch }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Create assets'
