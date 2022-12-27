@@ -9,10 +9,10 @@ on:
         required: true
         type: string
       files_to_update:
-        required: true
+        required: false
         type: string
       files_to_rename:
-        required: true
+        required: false
         type: string
 
 jobs:
