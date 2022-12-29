@@ -150,7 +150,7 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Commit:* <https://github.com/${{ github.repository }}/actions/runs/${{ ${{ github.run_id }} | Failed job>"
+                      "text": "*Commit:* <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} | Failed job>"
                     }
                   ]
                 }
