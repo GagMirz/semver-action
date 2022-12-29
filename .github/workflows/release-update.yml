@@ -26,16 +26,16 @@ jobs:
           echo "CONTINUE="${continue}"" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-regex-match@v2
-        name: 'Retrieve -r flag value from title'
+        name: 'Retrieve Release value from PR body'
         id: regex-match-release
         if: ${{ env.CONTINUE == 'true' }}
         with:
           text: ${{ env.PR_BODY }}
           # Matches -r flag value, only M m and p characters
-          regex: '(?<=(Release:))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
+          regex: '(?<=(Release:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
 
       - uses: actions-ecosystem/action-regex-match@v2
-        name: 'Retrieve -r flag value from title'
+        name: 'Retrieve Tickets value from PR body'
         id: regex-match-tickets
         if: ${{ env.CONTINUE == 'true' }}
         with:
