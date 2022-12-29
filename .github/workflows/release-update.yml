@@ -201,7 +201,6 @@ jobs:
                       "type": "mrkdwn",
                       "text": "*Release:* <https://github.com/${{ github.repository }}/releases/tag/${{ env.NEW_TAG}}| Files>"
                     }
-                    ${{ env.TICKETS_BLOCKS }}
                   ]
                 }
               ]
