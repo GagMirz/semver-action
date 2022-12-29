@@ -47,13 +47,13 @@ jobs:
         id: test1
         with:
           pattern: |
-            `Release:([^\s]*)`
+            `Release:([^\n]*)`
 
       - uses: begedin/variable-regex-extractor-action@v0.2.1
         id: test2
         with:
           pattern: |
-            `Tickets:([^\s]*)`
+            `Tickets:([^\n]*)`
 
       - name: 'Check SemVer update option, add to env'
         if: ${{ env.CONTINUE == 'true' }}
