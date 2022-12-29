@@ -43,15 +43,27 @@ jobs:
           # Matches -r flag value, only M m and p characters
           regex: '(?<=(Release:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
 
+      - uses: actions/variable-regex-extractor-action@v1.1
+        id: test1
+        with:
+          pattern: |
+            `Release:([^\s]*)`
+
+      - uses: actions/variable-regex-extractor-action@v1.1
+        id: test2
+        with:
+          pattern: |
+            `Tickets:([^\s]*)`
+
       - name: 'Check SemVer update option, add to env'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
           echo Body # Debug
           echo $PR_BODY # Debug
           echo Release level # Debug
-          echo ${{ steps.regex-match-release.outputs.match }} # Debug
+          echo ${{ steps.test1.outputs.value }} # Debug
           echo jira tickets  # Debug
-          echo ${{ steps.regex-match-tickets.outputs.match }} # Debug
+          echo ${{ steps.test2.outputs.value }} # Debug
           option="${{ steps.regex-match-tickets.outputs.match }}"
           [ -z "${option}" ] && echo "CONTINUE=false" >> $GITHUB_ENV
           echo "OPTION="${option}"" >> $GITHUB_ENV
