@@ -126,7 +126,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Release update cancelled with failure",
+                    "text": "Release update cancelled with failure"
                   }
                 },
                 {
@@ -171,7 +171,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Release update finished with success",
+                    "text": "Release update finished with success"
                   }
                 },
                 {
@@ -201,6 +201,7 @@ jobs:
                       "type": "mrkdwn",
                       "text": "*Release:* <https://github.com/${{ github.repository }}/releases/tag/${{ env.NEW_TAG}}| Files>"
                     }
+                    ${{ env.TICKETS_BLOCKS }}
                   ]
                 }
               ]
