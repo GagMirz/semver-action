@@ -43,13 +43,13 @@ jobs:
           # Matches -r flag value, only M m and p characters
           regex: '(?<=(Release:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
 
-      - uses: actions/variable-regex-extractor-action@v1.1
+      - uses: actions/variable-regex-extractor-action@v0.2.1
         id: test1
         with:
           pattern: |
             `Release:([^\s]*)`
 
-      - uses: actions/variable-regex-extractor-action@v1.1
+      - uses: actions/variable-regex-extractor-action@v0.2.1
         id: test2
         with:
           pattern: |
