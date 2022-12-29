@@ -43,17 +43,17 @@ jobs:
           # Matches -r flag value, only M m and p characters
           regex: '(?<=(Release:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
 
-      - uses: begedin/variable-regex-extractor-action@v0.2.1
+      - uses: MeilCli/regex-match@v1.5.19
         id: test1
         with:
-          pattern: |
-            `Release:([^\n]*)`
+          regex_pattern: ${{ env.PR_BODY }}
+          search_string: '(?<=(Release:))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
 
-      - uses: begedin/variable-regex-extractor-action@v0.2.1
+      - uses: MeilCli/regex-match@v1.5.19
         id: test2
         with:
-          pattern: |
-            `Tickets:([^\n]*)`
+          regex_pattern: ${{ env.PR_BODY }}
+          search_string: '(?<=(Tickets:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
 
       - name: 'Check SemVer update option, add to env'
         if: ${{ env.CONTINUE == 'true' }}
