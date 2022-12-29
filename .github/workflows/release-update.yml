@@ -112,6 +112,7 @@ jobs:
                       \"text\": \"*Ticket ${index}:* <https://mondu.atlassian.net/browse/${tickets_array[index]}| ${tickets_array[index]}>\"
                     }"
           done
+          exit 5
           echo $blocks
           echo "TICKETS_BLOCKS="${blocks}"" >> $GITHUB_ENV
 
