@@ -46,14 +46,14 @@ jobs:
       - uses: MeilCli/regex-match@v1.5.19
         id: test1
         with:
-          regex_pattern: ${{ env.PR_BODY }}
-          search_string: '(?<=(Release:))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
+          regex_pattern: '(?<=(Release:))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
+          search_string: ${{ env.PR_BODY }}
 
       - uses: MeilCli/regex-match@v1.5.19
         id: test2
         with:
-          regex_pattern: ${{ env.PR_BODY }}
-          search_string: '(?<=(Tickets:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
+          regex_pattern: '(?<=(Tickets:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
+          search_string: ${{ env.PR_BODY }}
 
       - name: 'Check SemVer update option, add to env'
         if: ${{ env.CONTINUE == 'true' }}
