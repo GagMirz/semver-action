@@ -105,7 +105,7 @@ jobs:
 
           NEWLINE=$'\n'
           blocks=""
-          echo tickets_array
+
           for index in "${!tickets_array[@]}"
           do
             blocks="${blocks},${NEWLINE}
@@ -113,7 +113,7 @@ jobs:
                       \"text\": \"*Ticket${index}:* <https://mondu.atlassian.net/browse/${tickets_array[index]}| ${tickets_array[index]}>\"
                     }"
           done
-          echo "TICKETS_BLOCKS="blocks"" >> $GITHUB_ENV
+          echo "TICKETS_BLOCKS="{$blocks}"" >> $GITHUB_ENV
 
       - uses: slackapi/slack-github-action@v1.23.0
         name: 'Send update to slack #release-alerts channel'
