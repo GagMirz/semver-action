@@ -113,7 +113,7 @@ jobs:
                     }"
           done
           echo $blocks
-          echo "TICKETS_BLOCKS="{$blocks}"" >> $GITHUB_ENV
+          echo "TICKETS_BLOCKS="${blocks}"" >> $GITHUB_ENV
 
       - uses: slackapi/slack-github-action@v1.23.0
         name: 'Send update to slack #release-alerts channel'
@@ -158,7 +158,7 @@ jobs:
                       "type": "mrkdwn",
                       "text": "*Assets:* <https://github.com/${{ github.repository }}/releases/tag/${{ env.NEW_TAG}}| Files>"
                     }
-                    ${ env.TICKETS_BLOCKS }
+                    ${{ env.TICKETS_BLOCKS }}
                   ]
                 }
               ]
