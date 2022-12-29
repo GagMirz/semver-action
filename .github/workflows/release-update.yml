@@ -158,7 +158,7 @@ jobs:
                       "type": "mrkdwn",
                       "text": "*Assets:* <https://github.com/${{ github.repository }}/releases/tag/${{ env.NEW_TAG}}| Files>"
                     }
-                    ${{ env.TICKETS_BLOCKS}}
+                    ${{ env.TICKETS_BLOCKS }}
                   ]
                 }
               ]
