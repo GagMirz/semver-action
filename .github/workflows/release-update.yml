@@ -1,18 +1,10 @@
-name: Update release with new tag and
+name: Update release with new tag and assets
 
 on:
-  workflow_dispatch:
-
   workflow_call:
     inputs:
       asset_creation_script:
         required: true
-        type: string
-      files_to_update:
-        required: false
-        type: string
-      files_to_rename:
-        required: false
         type: string
 
 jobs:
@@ -20,8 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.repository.default_branch }}
 
       - name: 'Get PR title and body'
         run: |
@@ -83,58 +73,6 @@ jobs:
         if: ${{ env.CONTINUE == 'true' }}
         run: |
           echo "NEW_TAG=${{ steps.bump-semver-patch.outputs.new_version }}" >> $GITHUB_ENV
-
-      # - name: 'Version variables'
-      #   if: ${{ env.CONTINUE == 'true' && inputs.files_to_rename || inputs.files_to_rename }}
-      #   run: |
-      #     echo ${OLD_TAG//./\\.} # Debug
-      #     echo ${OLD_TAG//./\\-} # Debug
-      #     echo ${NEW_TAG//./\\.} # Debug
-      #     echo ${NEW_TAG//./\\-} # Debug
-
-      #     OLD_TAG_SED_DOT="${OLD_TAG//./\\.}" 
-      #     OLD_TAG_SED_DASH="${OLD_TAG//./\\-}"
-      #     NEW_TAG_SED_DOT="${NEW_TAG//./\\.}"
-      #     NEW_TAG_SED_DASH="${NEW_TAG//./\\-}"
-
-      #     echo $OLD_TAG_SED_DOT # Debug
-      #     echo $OLD_TAG_SED_DASH # Debug
-      #     echo $NEW_TAG_SED_DOT # Debug
-      #     echo $NEW_TAG_SED_DASH # Debug
-
-      #     echo "Variables set" # Debug
-
-      #     files_to_update="${{ inputs.files_to_update }}" 
-      #     files_to_rename="${{ inputs.files_to_rename }}" 
-
-      #     echo $files_to_update # Debug
-      #     echo $files_to_rename # Debug
-
-      #     for file in $files_to_update; do
-      #       echo "Updating semver occurrences in $file"
-      #       sed -i "s/${OLD_TAG_SED_DOT}/${NEW_TAG_SED_DOT}/g" $file
-      #       echo "s/${OLD_TAG_SED_DOT}/${NEW_TAG_SED_DOT}/g"
-      #       sed -i "s/${OLD_TAG_SED_DASH}/${NEW_TAG_SED_DASH}/g" $file
-      #       echo "s/${OLD_TAG_SED_DASH}/${NEW_TAG_SED_DASH}/g"
-      #       cat $file # Debug
-      #     done
-
-      #     for old_name in $files_to_rename; do
-      #       echo "Updating semver occurrences in $file"
-      #       new_name=$(sed "s/\./-$NEW_TAG_SED_DASH./" <<< $old_name)
-      #       echo $old_name # Debug
-      #       echo $new_name # Debug
-      #       echo $NEW_TAG_SED_DASH # Debug
-      #       echo $(sed "s/\./-$NEW_TAG_SED_DASH./" <<< $old_name) # Debug
-
-      #       mv $old_name $new_name
-      #     done
-
-      # - name: Commit & Push changes
-      #   uses: actions-js/push@master
-      #   with:
-      #     branch: ${{ github.event.repository.default_branch }}
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Create assets'
         if: ${{ env.CONTINUE == 'true' }}
