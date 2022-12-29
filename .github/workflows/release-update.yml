@@ -44,15 +44,15 @@ jobs:
           regex: '(?<=(Release:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
 
       - uses: AsasInnab/regex-action@v1
-        id: test1
-        with:
-          regex_pattern: '(?<=(Release:))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
-          search_string: ${{ env.PR_BODY }}
-
-      - uses: AsasInnab/regex-action@v1
         id: test2
         with:
           regex_pattern: '(?<=(Tickets:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
+          search_string: ${{ env.PR_BODY }}
+          
+      - uses: AsasInnab/regex-action@v1
+        id: test1
+        with:
+          regex_pattern: '(?<=(Release:))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
           search_string: ${{ env.PR_BODY }}
 
       - name: 'Check SemVer update option, add to env'
