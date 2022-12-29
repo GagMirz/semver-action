@@ -109,7 +109,7 @@ jobs:
           do
             blocks="${blocks},
                     {\"type\": \"mrkdwn\",
-                      \"text\": \"*Ticket${index}:* <https://mondu.atlassian.net/browse/${tickets_array[index]}| ${tickets_array[index]}>\"
+                      \"text\": \"*Ticket ${index}:* <https://mondu.atlassian.net/browse/${tickets_array[index]}| ${tickets_array[index]}>\"
                     }"
           done
           echo $blocks
