@@ -25,33 +25,15 @@ jobs:
           echo "PR_BODY="${pr_body}"" >> $GITHUB_ENV
           echo "CONTINUE="${continue}"" >> $GITHUB_ENV
 
-      - uses: actions-ecosystem/action-regex-match@v2
-        name: 'Retrieve Tickets value from PR body'
-        id: regex-match-tickets
-        if: ${{ env.CONTINUE == 'true' }}
-        with:
-          text: ${{ env.PR_BODY }}
-          # Matches -r flag value, only M m and p characters
-          regex: '(?<=(Tickets:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
-
-      - uses: actions-ecosystem/action-regex-match@v2
-        name: 'Retrieve Release value from PR body'
-        id: regex-match-release
-        if: ${{ env.CONTINUE == 'true' }}
-        with:
-          text: ${{ env.PR_BODY }}
-          # Matches -r flag value, only M m and p characters
-          regex: '(?<=(Release:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
-
       - uses: AsasInnab/regex-action@v1
-        id: test2
+        id: regex-match-tickets
         with:
           regex_pattern: '(?<=(Tickets:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
           regex_flags: gm
           search_string: ${{ env.PR_BODY }}
 
       - uses: AsasInnab/regex-action@v1
-        id: test1
+        id: regex-match-release
         with:
           regex_pattern: '(?<=(Release:))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
           regex_flags: gm
@@ -60,12 +42,6 @@ jobs:
       - name: 'Check SemVer update option, add to env'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
-          echo Body # Debug
-          echo $PR_BODY # Debug
-          echo Release level # Debug
-          echo ${{ steps.test1.outputs.first_match }} # Debug
-          echo jira tickets  # Debug
-          echo ${{ steps.test2.outputs.first_match }} # Debug
           option="${{ steps.regex-match-tickets.outputs.match }}"
           [ -z "${option}" ] && echo "CONTINUE=false" >> $GITHUB_ENV
           echo "OPTION="${option}"" >> $GITHUB_ENV
