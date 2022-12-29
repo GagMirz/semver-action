@@ -46,9 +46,9 @@ jobs:
       - name: 'Check SemVer update option, add to env'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
-          echo ${{ steps.regex-match-release.outputs.group1 }}
+          echo ${{ steps.regex-match-release.outputs.match }}
+          echo ${{ steps.regex-match-release.outputs.group2 }}
           echo ${{ steps.regex-match-tickets.outputs.match }}
-          echo ${{ steps.regex-match-tickets.outputs.group1 }}
           option="${{ steps.regex-match-release.outputs.match }}"
           [ -z "${option}" ] && echo "CONTINUE=false" >> $GITHUB_ENV
           echo "OPTION="${option}"" >> $GITHUB_ENV
