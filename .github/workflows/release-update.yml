@@ -42,7 +42,7 @@ jobs:
       - name: 'Check SemVer update option, add to env'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
-          option="${{ steps.regex-match-tickets.outputs.match }}"
+          option="${{ steps.regex-match-release.outputs.first_match }}"
           [ -z "${option}" ] && echo "CONTINUE=false" >> $GITHUB_ENV
           echo "OPTION="${option}"" >> $GITHUB_ENV
 
@@ -99,7 +99,7 @@ jobs:
       - name: 'Ticket links, blocks for slack notification'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
-          tickets=${{ steps.regex-match-tickets.outputs.match }}
+          tickets=${{ steps.regex-match-tickets.outputs.first_match }}
           tickets=`echo $tickets | xargs` # Removed whitespaces
           IFS=', ' read -r -a tickets_array <<< "$string"
 
