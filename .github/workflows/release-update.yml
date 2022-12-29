@@ -46,6 +46,7 @@ jobs:
       - name: 'Check SemVer update option, add to env'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
+          echo $PR_BODY
           echo ${{ steps.regex-match-release.outputs.match }}
           echo ${{ steps.regex-match-release.outputs.group2 }}
           echo ${{ steps.regex-match-tickets.outputs.match }}
