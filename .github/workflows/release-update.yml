@@ -103,13 +103,12 @@ jobs:
           tickets=`echo $tickets | xargs` # Removed whitespaces
           IFS=', ' read -r -a tickets_array <<< "$tickets"
 
-          NEWLINE=$'\n'
           blocks=""
 
           for index in "${!tickets_array[@]}"
           do
-            blocks="${blocks},${NEWLINE}
-                    {\"type\": \"mrkdwn\", /BNPL-2641
+            blocks="${blocks},
+                    {\"type\": \"mrkdwn\",
                       \"text\": \"*Ticket${index}:* <https://mondu.atlassian.net/browse/${tickets_array[index]}| ${tickets_array[index]}>\"
                     }"
           done
