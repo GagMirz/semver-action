@@ -99,7 +99,7 @@ jobs:
       - name: 'Ticket links, blocks for slack notification'
         if: ${{ env.CONTINUE == 'true' }}
         run: |
-          tickets=${{ steps.regex-match-tickets.outputs.first_match }}
+          tickets="${{ steps.regex-match-tickets.outputs.first_match }}"
           tickets=`echo $tickets | xargs` # Removed whitespaces
           IFS=', ' read -r -a tickets_array <<< "$string"
 
