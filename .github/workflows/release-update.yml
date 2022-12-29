@@ -43,13 +43,13 @@ jobs:
           # Matches -r flag value, only M m and p characters
           regex: '(?<=(Release:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
 
-      - uses: MeilCli/regex-match@v1.5.19
+      - uses: AsasInnab/regex-action@v1
         id: test1
         with:
           regex_pattern: '(?<=(Release:))[ |:|\\]*(?<value>[M|m|p]*)(?=[ |\\]|$)'
           search_string: ${{ env.PR_BODY }}
 
-      - uses: MeilCli/regex-match@v1.5.19
+      - uses: AsasInnab/regex-action@v1
         id: test2
         with:
           regex_pattern: '(?<=(Tickets:))[ |:|\\]*(?<value>[a-zA-Z0-9_.,\ -]*)(?=[ |\\]|$)'
@@ -61,9 +61,9 @@ jobs:
           echo Body # Debug
           echo $PR_BODY # Debug
           echo Release level # Debug
-          echo ${{ steps.test1.outputs.matched_first }} # Debug
+          echo ${{ steps.test1.outputs.first_match }} # Debug
           echo jira tickets  # Debug
-          echo ${{ steps.test2.outputs.matched_first }} # Debug
+          echo ${{ steps.test2.outputs.first_match }} # Debug
           option="${{ steps.regex-match-tickets.outputs.match }}"
           [ -z "${option}" ] && echo "CONTINUE=false" >> $GITHUB_ENV
           echo "OPTION="${option}"" >> $GITHUB_ENV
