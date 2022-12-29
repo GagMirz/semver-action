@@ -85,16 +85,16 @@ jobs:
           eval ${{ inputs.asset_creation_script }}
           echo "$(ls -la)"
 
-      - uses: meeDamian/github-release@2.0
-        name: 'Update Release'
-        if: ${{ env.CONTINUE == 'true' }}
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ env.NEW_TAG }}
-          name: Release ${{env.NEW_TAG}}
-          body: ${{ env.PR_BODY }}
-          gzip: folders
-          files: ${{ env.FILES }}
+      # - uses: meeDamian/github-release@2.0
+      #   name: 'Update Release'
+      #   if: ${{ env.CONTINUE == 'true' }}
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     tag: ${{ env.NEW_TAG }}
+      #     name: Release ${{env.NEW_TAG}}
+      #     body: ${{ env.PR_BODY }}
+      #     gzip: folders
+      #     files: ${{ env.FILES }}
 
       - name: 'Ticket links, blocks for slack notification'
         if: ${{ env.CONTINUE == 'true' }}
