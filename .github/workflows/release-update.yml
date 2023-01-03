@@ -103,7 +103,7 @@ jobs:
 
       - name: 'Post release script'
         if: ${{ env.CONTINUE == 'true' }}
-      - run: bash -eux post_release_script.sh
+        run: bash -eux post_release_script.sh
 
 
       - name: 'Ticket links, blocks for slack notification'
