@@ -62,7 +62,7 @@ jobs:
           [ -z "${old_tag}" ] && old_tag=v0.0.0
           echo "OLD_TAG="${old_tag}"" >> $GITHUB_ENV
 
-      - uses: ./actions/option_action/action.yml
+      - uses: GagMirz/semver-action/actions/option_action/action.yml
         id: bull
         with:
           option: ${{ env.OPTION }}
