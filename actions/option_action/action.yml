@@ -1,0 +1,25 @@
+name: 'Level from option'
+description: >
+  Get level from option
+  p - patch
+  m - minor
+  M - Major
+inputs:
+  option:  # id of input
+    description: 'Option character p/m/M'
+    required: true
+    default: 'World'
+outputs:
+  level:
+    description: "Level output string patch/minor/major"
+    value: ${{ steps.run_script.outputs.level }}
+runs:
+  using: "composite"
+  steps:
+    - name: "Run bash script"
+      shell: bash
+      id: run_script
+      run: |
+        source option_action 
+
+        echo "level=$(option_action ${{ inputs.option }})" >> $GITHUB_OUTPUT
