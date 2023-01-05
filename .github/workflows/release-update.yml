@@ -61,23 +61,16 @@ jobs:
           old_tag="${{ steps.get-latest-tag.outputs.tag }}"
           [ -z "${old_tag}" ] && old_tag=v0.0.0
           echo "OLD_TAG="${old_tag}"" >> $GITHUB_ENV
-
-      - uses: GagMirz/semver-action/actions/option_action/@master
-        id: bull
-        with:
-          option: ${{ env.OPTION }}
-      - run: |
-          echo "LEVEL="${{ steps.bull.outputs.level }}"" >> $GITHUB_ENV
       
-      # - name: 'Get level from option'
-      #   if: ${{ env.CONTINUE == 'true' }}
-      #   run: |
-      #     case `echo $OPTION | xargs` in
-      #       M) level="major";;
-      #       m) level="minor";;
-      #       p) level="patch";;
-      #     esac
-      #     echo "LEVEL="${level}"" >> $GITHUB_ENV
+      - name: 'Get level from option'
+        if: ${{ env.CONTINUE == 'true' }}
+        run: |
+          case `echo $OPTION | xargs` in
+            M) level="major";;
+            m) level="minor";;
+            p) level="patch";;
+          esac
+          echo "LEVEL="${level}"" >> $GITHUB_ENV
 
       - uses: actions-ecosystem/action-bump-semver@v1
         name: 'Update SemVer tag' 
