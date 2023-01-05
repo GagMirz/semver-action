@@ -231,7 +231,6 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: 'Create assets'
-        if: ${{ env.CONTINUE == 'true' }}
         run: |
           eval ${{ inputs.asset_creation_script }}
           echo "$(ls -la)"
@@ -247,7 +246,6 @@ jobs:
           done
 
 
-      - name: 'Create assets'
-        if: ${{ env.CONTINUE == 'true' }}
+      - name: 'Run tests on assets'
         run: |
           eval ${{ inputs.asset_creation_test_script }}
