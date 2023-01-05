@@ -9,7 +9,7 @@ on:
       post_script:
         required: false
         type: string
-      asset_creation_test_script:
+      asset_test_script:
         required: false
         type: string
 
@@ -239,9 +239,9 @@ jobs:
         run: |
           for file in $FILES; do
           if [ -f "$file" ];then
-            echo "File exists"
+            echo "File ${file} exists"
           else
-            echo "File doesn't exist"
+            echo "File ${file} doesn't exist"
           fi            
           done
 
